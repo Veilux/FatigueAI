@@ -60,8 +60,9 @@ optimize_window_scan.py
 
 # Output
 outputs/figures/
-outputs/reports/*.txt
-outputs/reports/*.log
+outputs/reports/
+outputs/manual_features.csv
+outputs/*.npy
 catboost_info/
 
 # Large files

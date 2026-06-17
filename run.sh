@@ -6,11 +6,21 @@
 set -e
 cd "$(dirname "$0")"
 
-PYTHON=python3
+# 自动检测 Python 命令
+if command -v python3 &>/dev/null; then
+    PYTHON=python3
+elif command -v python &>/dev/null; then
+    PYTHON=python
+else
+    echo "错误: 未找到 python 或 python3"
+    exit 1
+fi
+
 PORT=8080
 
 echo "============================================"
 echo "  FatigueAI — 运动疲劳智能监测系统"
+echo "  Python: $PYTHON"
 echo "============================================"
 
 case "${1:-all}" in

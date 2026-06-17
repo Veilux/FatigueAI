@@ -757,18 +757,16 @@ const app = createApp({
     // ══════════════════════════════════════
     function exportCSV() {
       if (timeData.length === 0) { alert('暂无数据可导出，请先启动监测。'); return; }
-      let csv = 'Time,HR,HRV,EDA,Temp,BR,Fatigue_Score
-';
-      for (let i = 0; i < timeData.length; i++) {
-        const time = timeData[i] || '';
-        const hr = hrData[i] ?? '';
-        const hrv = hrvData[i] ?? '';
-        const eda = edaData[i] ?? '';
-        const temp = tempData[i] ?? '';
-        const br = brData[i] ?? '';
-        const score = fatigueData[i] ?? '';
-        csv += `${time},${hr},${hrv},${eda},${temp},${br},${score}
-`;
+      var csv = 'Time,HR,HRV,EDA,Temp,BR,Fatigue_Score\n';
+      for (var i = 0; i < timeData.length; i++) {
+        var time = timeData[i] || '';
+        var hr = hrData[i] != null ? hrData[i] : '';
+        var hrv = hrvData[i] != null ? hrvData[i] : '';
+        var eda = edaData[i] != null ? edaData[i] : '';
+        var temp = tempData[i] != null ? tempData[i] : '';
+        var br = brData[i] != null ? brData[i] : '';
+        var score = fatigueData[i] != null ? fatigueData[i] : '';
+        csv += time + ',' + hr + ',' + hrv + ',' + eda + ',' + temp + ',' + br + ',' + score + '\n';
       }
       const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
       const blob = new Blob([bom, csv], { type: 'text/csv;charset=utf-8;' });
