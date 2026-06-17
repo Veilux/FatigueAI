@@ -1,0 +1,331 @@
+{
+  "buffer_sec": 150,
+  "n_samples": 355,
+  "n_features": 87,
+  "results": {
+    "session": {
+      "norm_mode": "session",
+      "accuracy": 0.3634,
+      "f1": 0.3619,
+      "confusion_matrix": [
+        [
+          35,
+          46,
+          29
+        ],
+        [
+          39,
+          52,
+          34
+        ],
+        [
+          23,
+          55,
+          42
+        ]
+      ],
+      "fold_results": [
+        {
+          "fold": 1,
+          "test_pid": "01",
+          "n_train": 323,
+          "n_test": 32,
+          "accuracy": 0.0938
+        },
+        {
+          "fold": 2,
+          "test_pid": "02",
+          "n_train": 325,
+          "n_test": 30,
+          "accuracy": 0.5333
+        },
+        {
+          "fold": 3,
+          "test_pid": "03",
+          "n_train": 329,
+          "n_test": 26,
+          "accuracy": 0.2692
+        },
+        {
+          "fold": 4,
+          "test_pid": "04",
+          "n_train": 323,
+          "n_test": 32,
+          "accuracy": 0.4062
+        },
+        {
+          "fold": 5,
+          "test_pid": "05",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.3871
+        },
+        {
+          "fold": 6,
+          "test_pid": "06",
+          "n_train": 329,
+          "n_test": 26,
+          "accuracy": 0.2308
+        },
+        {
+          "fold": 7,
+          "test_pid": "07",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.1935
+        },
+        {
+          "fold": 8,
+          "test_pid": "08",
+          "n_train": 328,
+          "n_test": 27,
+          "accuracy": 0.4074
+        },
+        {
+          "fold": 9,
+          "test_pid": "09",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.3871
+        },
+        {
+          "fold": 10,
+          "test_pid": "10",
+          "n_train": 325,
+          "n_test": 30,
+          "accuracy": 0.5333
+        },
+        {
+          "fold": 11,
+          "test_pid": "11",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.4839
+        },
+        {
+          "fold": 12,
+          "test_pid": "12",
+          "n_train": 327,
+          "n_test": 28,
+          "accuracy": 0.4286
+        }
+      ]
+    },
+    "participant": {
+      "norm_mode": "participant",
+      "accuracy": 0.538,
+      "f1": 0.5374,
+      "confusion_matrix": [
+        [
+          51,
+          44,
+          15
+        ],
+        [
+          31,
+          66,
+          28
+        ],
+        [
+          18,
+          28,
+          74
+        ]
+      ],
+      "fold_results": [
+        {
+          "fold": 1,
+          "test_pid": "01",
+          "n_train": 323,
+          "n_test": 32,
+          "accuracy": 0.5938
+        },
+        {
+          "fold": 2,
+          "test_pid": "02",
+          "n_train": 325,
+          "n_test": 30,
+          "accuracy": 0.5667
+        },
+        {
+          "fold": 3,
+          "test_pid": "03",
+          "n_train": 329,
+          "n_test": 26,
+          "accuracy": 0.5
+        },
+        {
+          "fold": 4,
+          "test_pid": "04",
+          "n_train": 323,
+          "n_test": 32,
+          "accuracy": 0.4062
+        },
+        {
+          "fold": 5,
+          "test_pid": "05",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.3226
+        },
+        {
+          "fold": 6,
+          "test_pid": "06",
+          "n_train": 329,
+          "n_test": 26,
+          "accuracy": 0.6154
+        },
+        {
+          "fold": 7,
+          "test_pid": "07",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.4839
+        },
+        {
+          "fold": 8,
+          "test_pid": "08",
+          "n_train": 328,
+          "n_test": 27,
+          "accuracy": 0.5926
+        },
+        {
+          "fold": 9,
+          "test_pid": "09",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.5484
+        },
+        {
+          "fold": 10,
+          "test_pid": "10",
+          "n_train": 325,
+          "n_test": 30,
+          "accuracy": 0.7333
+        },
+        {
+          "fold": 11,
+          "test_pid": "11",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.5806
+        },
+        {
+          "fold": 12,
+          "test_pid": "12",
+          "n_train": 327,
+          "n_test": 28,
+          "accuracy": 0.5357
+        }
+      ]
+    },
+    "none": {
+      "norm_mode": "none",
+      "accuracy": 0.3746,
+      "f1": 0.3691,
+      "confusion_matrix": [
+        [
+          32,
+          44,
+          34
+        ],
+        [
+          36,
+          41,
+          48
+        ],
+        [
+          29,
+          31,
+          60
+        ]
+      ],
+      "fold_results": [
+        {
+          "fold": 1,
+          "test_pid": "01",
+          "n_train": 323,
+          "n_test": 32,
+          "accuracy": 0.5
+        },
+        {
+          "fold": 2,
+          "test_pid": "02",
+          "n_train": 325,
+          "n_test": 30,
+          "accuracy": 0.2667
+        },
+        {
+          "fold": 3,
+          "test_pid": "03",
+          "n_train": 329,
+          "n_test": 26,
+          "accuracy": 0.4615
+        },
+        {
+          "fold": 4,
+          "test_pid": "04",
+          "n_train": 323,
+          "n_test": 32,
+          "accuracy": 0.0938
+        },
+        {
+          "fold": 5,
+          "test_pid": "05",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.3871
+        },
+        {
+          "fold": 6,
+          "test_pid": "06",
+          "n_train": 329,
+          "n_test": 26,
+          "accuracy": 0.4231
+        },
+        {
+          "fold": 7,
+          "test_pid": "07",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.6452
+        },
+        {
+          "fold": 8,
+          "test_pid": "08",
+          "n_train": 328,
+          "n_test": 27,
+          "accuracy": 0.3333
+        },
+        {
+          "fold": 9,
+          "test_pid": "09",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.3871
+        },
+        {
+          "fold": 10,
+          "test_pid": "10",
+          "n_train": 325,
+          "n_test": 30,
+          "accuracy": 0.1667
+        },
+        {
+          "fold": 11,
+          "test_pid": "11",
+          "n_train": 324,
+          "n_test": 31,
+          "accuracy": 0.4516
+        },
+        {
+          "fold": 12,
+          "test_pid": "12",
+          "n_train": 327,
+          "n_test": 28,
+          "accuracy": 0.3929
+        }
+      ]
+    }
+  }
+}

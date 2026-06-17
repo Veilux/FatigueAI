@@ -1,0 +1,24 @@
+{
+  "window_avg": 0.7654,
+  "window_best": 0.7981,
+  "methods": {
+    "majority_vote": {
+      "mean": 0.72,
+      "best": 0.75
+    },
+    "avg_prob": {
+      "mean": 0.79,
+      "best": 0.8
+    },
+    "conf_weighted": {
+      "mean": 0.79,
+      "best": 0.8
+    },
+    "trimmed_avg": {
+      "mean": 0.79,
+      "best": 0.8
+    }
+  },
+  "best_method": "avg_prob",
+  "best_acc": 0.8
+}

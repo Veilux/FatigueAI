@@ -1,0 +1,337 @@
+{
+  "v2_results": [
+    {
+      "baseline": 0.8056,
+      "ablation": [
+        {
+          "group": "HR相关",
+          "n_features": 32,
+          "accuracy": 0.75,
+          "delta": -0.0556
+        },
+        {
+          "group": "EDA相关",
+          "n_features": 9,
+          "accuracy": 0.8333,
+          "delta": 0.0278
+        },
+        {
+          "group": "温度相关",
+          "n_features": 10,
+          "accuracy": 0.7778,
+          "delta": -0.0278
+        },
+        {
+          "group": "EEG相关",
+          "n_features": 12,
+          "accuracy": 0.7778,
+          "delta": -0.0278
+        },
+        {
+          "group": "加速度相关",
+          "n_features": 10,
+          "accuracy": 0.8333,
+          "delta": 0.0278
+        },
+        {
+          "group": "呼吸相关",
+          "n_features": 10,
+          "accuracy": 0.7778,
+          "delta": -0.0278
+        },
+        {
+          "group": "BVP相关",
+          "n_features": 9,
+          "accuracy": 0.7778,
+          "delta": -0.0278
+        },
+        {
+          "group": "交叉特征",
+          "n_features": 8,
+          "accuracy": 0.8056,
+          "delta": 0.0
+        }
+      ]
+    },
+    {
+      "name": "增强Stacking(7模型+多归一化+特征选择)",
+      "accuracy": 0.8056,
+      "f1": 0.8071,
+      "confusion_matrix": [
+        [
+          11,
+          0,
+          1
+        ],
+        [
+          0,
+          10,
+          2
+        ],
+        [
+          0,
+          4,
+          8
+        ]
+      ],
+      "fold_results": [
+        {
+          "fold": 1,
+          "test_pid": "01",
+          "accuracy": 0.3333
+        },
+        {
+          "fold": 2,
+          "test_pid": "02",
+          "accuracy": 1.0
+        },
+        {
+          "fold": 3,
+          "test_pid": "03",
+          "accuracy": 1.0
+        },
+        {
+          "fold": 4,
+          "test_pid": "04",
+          "accuracy": 0.6667
+        },
+        {
+          "fold": 5,
+          "test_pid": "05",
+          "accuracy": 1.0
+        },
+        {
+          "fold": 6,
+          "test_pid": "06",
+          "accuracy": 1.0
+        },
+        {
+          "fold": 7,
+          "test_pid": "07",
+          "accuracy": 1.0
+        },
+        {
+          "fold": 8,
+          "test_pid": "08",
+          "accuracy": 1.0
+        },
+        {
+          "fold": 9,
+          "test_pid": "09",
+          "accuracy": 0.3333
+        },
+        {
+          "fold": 10,
+          "test_pid": "10",
+          "accuracy": 1.0
+        },
+        {
+          "fold": 11,
+          "test_pid": "11",
+          "accuracy": 0.3333
+        },
+        {
+          "fold": 12,
+          "test_pid": "12",
+          "accuracy": 1.0
+        }
+      ]
+    },
+    {
+      "name": "最终概率融合(6模型权重搜索)",
+      "accuracy": 0.8056,
+      "f1": 0.8094,
+      "confusion_matrix": [
+        [
+          10,
+          1,
+          1
+        ],
+        [
+          0,
+          10,
+          2
+        ],
+        [
+          0,
+          3,
+          9
+        ]
+      ],
+      "fold_results": [
+        {
+          "fold": 1,
+          "test_pid": "01",
+          "accuracy": 0.3333,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "inner_val_acc": 1.0
+        },
+        {
+          "fold": 2,
+          "test_pid": "02",
+          "accuracy": 1.0,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "inner_val_acc": 1.0
+        },
+        {
+          "fold": 3,
+          "test_pid": "03",
+          "accuracy": 1.0,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "inner_val_acc": 1.0
+        },
+        {
+          "fold": 4,
+          "test_pid": "04",
+          "accuracy": 0.6667,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "inner_val_acc": 1.0
+        },
+        {
+          "fold": 5,
+          "test_pid": "05",
+          "accuracy": 1.0,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "inner_val_acc": 1.0
+        },
+        {
+          "fold": 6,
+          "test_pid": "06",
+          "accuracy": 1.0,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "inner_val_acc": 1.0
+        },
+        {
+          "fold": 7,
+          "test_pid": "07",
+          "accuracy": 1.0,
+          "inner_val_weights": [
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "inner_val_acc": 1.0
+        },
+        {
+          "fold": 8,
+          "test_pid": "08",
+          "accuracy": 1.0,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "inner_val_acc": 0.8333
+        },
+        {
+          "fold": 9,
+          "test_pid": "09",
+          "accuracy": 0.3333,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "inner_val_acc": 0.8333
+        },
+        {
+          "fold": 10,
+          "test_pid": "10",
+          "accuracy": 1.0,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            0.5,
+            0.0,
+            0.0,
+            0.5
+          ],
+          "inner_val_acc": 0.8333
+        },
+        {
+          "fold": 11,
+          "test_pid": "11",
+          "accuracy": 0.3333,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "inner_val_acc": 0.8333
+        },
+        {
+          "fold": 12,
+          "test_pid": "12",
+          "accuracy": 1.0,
+          "inner_val_weights": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "inner_val_acc": 0.8333
+        }
+      ]
+    }
+  ],
+  "baseline": {
+    "XGBoost": 0.7778,
+    "Stacking_v1": 0.8056
+  }
+}

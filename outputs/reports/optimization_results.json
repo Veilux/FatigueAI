@@ -1,0 +1,29 @@
+{
+  "optimization_results": [
+    {
+      "name": "XGBoost+Optuna(嵌套CV)",
+      "accuracy": 0.7778,
+      "f1": 0.7774
+    },
+    {
+      "name": "Stacking(XGB+LGBM+CatBoost)",
+      "accuracy": 0.8056,
+      "f1": 0.8071,
+      "confusion_matrix": [[11,0,1],[0,10,2],[0,4,8]]
+    },
+    {
+      "name": "CNN特征到XGBoost",
+      "accuracy": 0.4444,
+      "f1": 0.4495
+    },
+    {
+      "name": "参与者微调",
+      "accuracy": 0.0833,
+      "f1": 0.0741
+    }
+  ],
+  "baseline": {
+    "CNN+BiLSTM_v4": 0.408,
+    "XGBoost": 0.7778
+  }
+}

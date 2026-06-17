@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Data (too large)
+data/raw/
+data/processed/
+
+# Model files (large)
+outputs/models/*.pkl
+outputs/models/*.pt
+outputs/models/*.npy
+
+# Report generation scripts
+fill_template*.py
+fix_citations*.py
+fix_refs*.py
+generate_report.py
+generate_diagrams.py
+insert_figures*.py
+add_citations*.py
+update_refs.py
+add_table_format.py
+open_and_insert.py
+replace_figs*.py
+insert_diagrams*.py
+
+# Analysis scripts
+optimize_*.py
+analyze_*.py
+train_*.py
+diag_*.py
+run_*.py
+test_full_features.py
+optimize_window_scan.py
+
+# Reports and docs
+*.docx
+*.md
+*.txt
+*.jpg
+
+# 比赛关键文件必须保留
+!README.md
+!requirements.txt
+
+# Output
+outputs/figures/
+outputs/reports/*.txt
+outputs/reports/*.log
+catboost_info/
+
+# Large files
+*.zip
+*.tar.gz

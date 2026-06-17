@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FatigueAI - 运动疲劳智能监测系统</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+  <div id="app">
+    <!-- ═══ 顶部导航 ═══ -->
+    <header class="top-bar">
+      <div class="logo">
+        <span class="logo-icon">🧠</span>
+        <span class="logo-text">FatigueAI</span>
+        <span class="logo-sub">运动疲劳智能监测系统</span>
+      </div>
+      <nav class="page-nav">
+        <button :class="{'active': currentPage === 'monitor'}" @click="switchPage('monitor')">
+          <span class="nav-icon">📡</span> 实时监测
+        </button>
+        <button :class="{'active': currentPage === 'analysis'}" @click="switchPage('analysis')">
+          <span class="nav-icon">📊</span> 数据分析
+        </button>
+        <button :class="{'active': currentPage === 'models'}" @click="switchPage('models')">
+          <span class="nav-icon">🤖</span> 模型性能
+        </button>
+      </nav>
+      <div class="top-actions">
+        <button class="icon-btn" @click="toggleTheme" :title="isDark ? '切换浅色' : '切换深色'">
+          {{ isDark ? '☀️' : '🌙' }}
+        </button>
+        <button class="icon-btn" :class="{'active': soundEnabled}" @click="soundEnabled = !soundEnabled" title="声音告警">
+          {{ soundEnabled ? '🔔' : '🔕' }}
+        </button>
+        <div class="status-badge" :class="streamActive ? 'active' : 'inactive'">
+          <span class="dot"></span>
+          {{ streamActive ? '实时监测中' : '未连接' }}
+        </div>
+        <select v-model="selectedPid" @change="onSessionChange" class="select-box">
+          <option v-for="p in participants" :key="p.participant_id" :value="p.participant_id">
+            参与者 {{ p.participant_id }}
+          </option>
+        </select>
+        <select v-model="selectedSid" @change="onSessionChange" class="select-box">
+          <option value="01">会话 01</option>
+          <option value="02">会话 02</option>
+          <option value="03">会话 03</option>
+        </select>
+        <button class="btn-primary" @click="toggleStream">
+          {{ streamActive ? '⏸ 暂停' : '▶ 开始' }}
+        </button>
+      </div>
+    </header>
+
+    <!-- ═══ 高疲劳警告横幅 ═══ -->
+    <div class="alert-banner" v-show="showAlert">
+      <span class="alert-icon">⚠️</span>
+      <span>高疲劳警报 — 当前疲劳评分 {{ currentData.fatigue_score || 0 }}，建议立即降低运动强度！</span>
+      <button class="alert-close" @click="dismissAlert">×</button>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         PAGE 1: 实时监测
+         ═══════════════════════════════════════════════ -->
+    <main v-show="currentPage === 'monitor'" class="dashboard" :class="{'has-alert': showAlert}">
+      <!-- 左侧边栏 -->
+      <aside class="sidebar">
+        <!-- 疲劳状态大卡片 -->
+        <div class="fatigue-card" :class="'level-' + fatigueLevelClass">
+          <div class="fatigue-ring">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"/>
+              <circle cx="60" cy="60" r="52" :stroke="fatigueColor" stroke-width="8" fill="none"
+                      :stroke-dasharray="fatigueDasharray" stroke-linecap="round"
+                      transform="rotate(-90 60 60)" class="progress-ring"/>
+            </svg>
+            <div class="ring-center">
+              <div class="ring-score">{{ currentData.fatigue_score || 0 }}</div>
+              <div class="ring-label">疲劳评分</div>
+            </div>
+          </div>
+          <div class="fatigue-level" :style="{color: fatigueColor}">
+            {{ currentData.fatigue_level || '--' }}度疲劳
+          </div>
+          <div class="fatigue-confidence">
+            置信度: {{ (currentData.confidence * 100).toFixed(0) }}%
+          </div>
+        </div>
+
+        <!-- 3D人体模型 -->
+        <div class="body3d-card">
+          <div class="body3d-title">身体状态模型</div>
+          <div id="body3dCanvas" class="body3d-canvas"></div>
+        </div>
+
+        <!-- 雷达图 -->
+        <div class="radar-card">
+          <div class="radar-header">
+            <div class="radar-title">多维疲劳画像</div>
+            <select v-model="comparePid" class="select-box-sm" @change="updateRadarChart">
+              <option value="">对比: 无</option>
+              <option v-for="p in participants" :key="p.participant_id" :value="p.participant_id"
+                      v-show="p.participant_id !== selectedPid">
+                对比: P{{ p.participant_id }}
+              </option>
+            </select>
+          </div>
+          <div id="radarChart" style="width:268px;height:200px;"></div>
+        </div>
+
+        <!-- 指标卡片 -->
+        <div class="metric-cards">
+          <div class="metric-card" v-for="m in metricDefs" :key="m.key"
+               :class="{'alert-pulse': m.alert(currentData)}">
+            <div class="metric-icon">{{ m.icon }}</div>
+            <div class="metric-info">
+              <div class="metric-value">{{ currentData[m.key] ?? '--' }}</div>
+              <div class="metric-label">{{ m.label }}</div>
+            </div>
+            <div class="metric-trend" :class="m.trendClass(currentData)">
+              {{ m.trendText(currentData) }}
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 中间主内容 -->
+      <section class="main-content">
+        <!-- ECG波形 -->
+        <div class="ecg-strip">
+          <canvas id="ecgCanvas" class="ecg-canvas"></canvas>
+          <div class="ecg-label">ECG 实时波形 (模拟)</div>
+        </div>
+
+        <!-- 实时图表 -->
+        <div class="chart-card full-width">
+          <div class="chart-header">
+            <h3>📈 实时生理信号监测</h3>
+            <div class="chart-tabs">
+              <button v-for="tab in chartTabs" :key="tab.key"
+                      :class="{'active': activeTab === tab.key}"
+                      @click="activeTab = tab.key">
+                {{ tab.label }}
+              </button>
+            </div>
+          </div>
+          <div id="realtimeChart" class="chart-area"></div>
+        </div>
+
+        <!-- 下方：疲劳趋势/SHAP + AI建议 -->
+        <div class="row-2col">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>{{ bottomLeftTab === 'trend' ? '📊 疲劳趋势' : '🔍 特征重要性 (SHAP)' }}</h3>
+              <div class="chart-tabs">
+                <button :class="{'active': bottomLeftTab === 'trend'}" @click="switchBottomLeft('trend')">趋势</button>
+                <button :class="{'active': bottomLeftTab === 'shap'}" @click="switchBottomLeft('shap')">特征</button>
+              </div>
+            </div>
+            <div id="fatigueChart" class="chart-area-sm" v-show="bottomLeftTab === 'trend'"></div>
+            <div id="shapChart" class="chart-area-sm" v-show="bottomLeftTab === 'shap'"></div>
+          </div>
+
+          <!-- AI建议 -->
+          <div class="chart-card ai-card">
+            <div class="chart-header">
+              <h3>🤖 AI 健康顾问</h3>
+              <span class="ai-badge">RAG + LLM</span>
+            </div>
+            <div class="chat-area" ref="chatArea">
+              <div v-for="(msg, i) in chatMessages" :key="i"
+                   :class="['chat-msg', msg.role]">
+                <div class="msg-avatar">{{ msg.role === 'ai' ? '🤖' : '👤' }}</div>
+                <div class="msg-bubble" v-html="msg.text"></div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <input v-model="chatInput" @keyup.enter="sendChat"
+                     placeholder="问我关于疲劳和损伤预防的问题..." />
+              <button @click="sendChat" class="btn-send">发送</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 训练历史时间线 -->
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <h3>⏱ 训练历史</h3>
+            <span class="timeline-hint">点击时间点回放</span>
+          </div>
+          <div class="timeline-track">
+            <div class="timeline-fill" :style="{width: sessionProgress + '%'}"></div>
+            <div v-for="(mark, i) in timelineMarks" :key="i"
+                 class="timeline-marker" :class="mark.level"
+                 :style="{left: mark.pos + '%'}"
+                 :title="mark.label"
+                 @click="seekTimeline(mark)">
+              <span class="marker-dot"></span>
+            </div>
+          </div>
+          <div class="timeline-labels">
+            <span>0m</span>
+            <span>{{ (sessionDataLength / 60).toFixed(0) }}m</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ═══════════════════════════════════════════════
+         PAGE 2: 数据分析
+         ═══════════════════════════════════════════════ -->
+    <main v-show="currentPage === 'analysis'" class="page-analysis">
+      <!-- 多会话对比 -->
+      <div class="analysis-section">
+        <div class="section-header">
+          <h2>📊 多会话疲劳对比</h2>
+          <div class="section-actions">
+            <select v-model="compareSessionA" class="select-box">
+              <option value="01">会话 01</option>
+              <option value="02">会话 02</option>
+              <option value="03">会话 03</option>
+            </select>
+            <span class="vs-label">VS</span>
+            <select v-model="compareSessionB" class="select-box">
+              <option value="01">会话 01</option>
+              <option value="02">会话 02</option>
+              <option value="03">会话 03</option>
+            </select>
+            <button class="btn-primary btn-sm" @click="loadComparison">加载对比</button>
+          </div>
+        </div>
+        <div class="compare-grid">
+          <div class="compare-panel">
+            <div class="compare-label">会话 {{ compareSessionA }} - {{ getSessionLabel(compareSessionA) }}</div>
+            <div id="compareChartA" class="compare-chart"></div>
+          </div>
+          <div class="compare-panel">
+            <div class="compare-label">会话 {{ compareSessionB }} - {{ getSessionLabel(compareSessionB) }}</div>
+            <div id="compareChartB" class="compare-chart"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 疲劳热力图 -->
+      <div class="analysis-section">
+        <div class="section-header">
+          <h2>🌡 疲劳热力图 — 会话 {{ selectedSid }}</h2>
+        </div>
+        <div id="heatmapChart" class="heatmap-container"></div>
+      </div>
+
+      <!-- 导出区 -->
+      <div class="analysis-section export-section">
+        <h2>📁 数据导出</h2>
+        <div class="export-actions">
+          <button class="btn-export" @click="exportCSV">
+            📄 导出 CSV 数据
+          </button>
+          <button class="btn-export" @click="exportPDF">
+            📋 导出 PDF 报告
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- ═══════════════════════════════════════════════
+         PAGE 3: 模型性能
+         ═══════════════════════════════════════════════ -->
+    <main v-show="currentPage === 'models'" class="page-models" id="modelPage">
+      <div class="models-grid">
+        <!-- 模型对比柱状图 -->
+        <div class="model-card">
+          <h3>🏆 模型性能对比</h3>
+          <div id="modelCompareChart" class="model-chart"></div>
+        </div>
+
+        <!-- 消融实验 -->
+        <div class="model-card">
+          <h3>🧪 消融实验 (通道贡献)</h3>
+          <div id="ablationChart" class="model-chart"></div>
+        </div>
+
+        <!-- 混淆矩阵 -->
+        <div class="model-card">
+          <h3>🎯 混淆矩阵</h3>
+          <div id="confusionChart" class="model-chart"></div>
+        </div>
+
+        <!-- 训练曲线 -->
+        <div class="model-card">
+          <h3>📈 训练曲线</h3>
+          <div id="trainingCurveChart" class="model-chart"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ═══ 过劳预测浮窗 ═══ -->
+    <div class="prediction-toast" v-show="overtrainPrediction !== null && streamActive">
+      <span class="pred-icon">⏳</span>
+      <span class="pred-text">
+        预计 <b>{{ overtrainPrediction }}</b> 分钟后达到高疲劳
+      </span>
+    </div>
+
+    <!-- ═══ 底部状态栏 ═══ -->
+    <footer class="bottom-bar">
+      <div class="progress-section">
+        <span class="progress-label">数据回放</span>
+        <div class="progress-bar">
+          <div class="progress-fill" :style="{width: sessionProgress + '%'}"></div>
+        </div>
+        <span class="progress-text">{{ sessionProgress.toFixed(0) }}%</span>
+      </div>
+      <div class="bottom-info">
+        <span>参与者: {{ selectedPid }}</span>
+        <span>当前会话: {{ currentSessionId }}</span>
+        <span>活动: {{ currentActivityLabel }}</span>
+        <span>轮次: 第{{ cycleCount }}轮</span>
+        <span>已运行: {{ elapsedTime }}</span>
+        <span>数据点: {{ dataPointCount }}</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
