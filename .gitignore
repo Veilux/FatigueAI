@@ -60,7 +60,8 @@ optimize_window_scan.py
 
 # Output
 outputs/figures/
-outputs/reports/
+outputs/reports/*
+!outputs/reports/final_v5_results.json
 outputs/manual_features.csv
 outputs/*.npy
 catboost_info/
