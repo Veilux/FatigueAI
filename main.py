@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 FatigueAI 主程序入口
-基于 FatigueSet 数据集的多模态疲劳检测与损伤预防 AI 系统
+基于 WESAD 数据集的多模态疲劳检测与损伤预防 AI 系统
 
 用法：
     python main.py                # 运行完整流程
@@ -22,7 +22,7 @@ from config.dataset_config import (
     PARTICIPANT_IDS, SESSION_IDS, PREPROCESSING,
     MODEL_CONFIG, CORE_SIGNALS,
 )
-from data.loader import FatigueSetLoader
+from data.loader import WESADLoader
 from features.extractor import (
     ManualFeatureExtractor, RawSignalWindower,
     DEFAULT_CHANNEL_SPECS,
@@ -37,7 +37,7 @@ def step1_check_dataset():
     print("  步骤1：数据集快速检查")
     print("=" * 60)
 
-    loader = FatigueSetLoader()
+    loader = WESADLoader()
 
     # 元数据
     print("\n[元数据] 活动强度分配:")
@@ -78,7 +78,7 @@ def step2_prepare_features():
     print("  步骤2：特征工程")
     print("=" * 60)
 
-    loader = FatigueSetLoader()
+    loader = WESADLoader()
     windower = RawSignalWindower()
     extractor = ManualFeatureExtractor()
     fs_map = {n: c["sampling_rate"] for n, c in CORE_SIGNALS.items()}

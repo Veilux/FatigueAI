@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-FatigueSet 数据加载与预处理模块
+WESAD 数据加载与预处理模块
 """
 import pandas as pd
 import numpy as np
@@ -16,8 +16,8 @@ from config.dataset_config import (
 )
 
 
-class FatigueSetLoader:
-    """FatigueSet 数据集加载器"""
+class WESADLoader:
+    """WESAD 数据集加载器"""
 
     def __init__(self, data_root: Path = DATA_ROOT):
         self.data_root = data_root
@@ -209,10 +209,10 @@ class SignalPreprocessor:
 def quick_check():
     """快速验证数据集加载是否正常"""
     print("=" * 60)
-    print("FatigueSet 数据集快速检查")
+    print("WESAD 数据集快速检查")
     print("=" * 60)
 
-    loader = FatigueSetLoader()
+    loader = WESADLoader()
 
     # 1. 元数据
     print("\n[1] 元数据（活动强度分配）:")

@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-FatigueSet 数据集配置文件
+WESAD 数据集配置文件
 """
 import os
 from pathlib import Path
 
 # ── 数据集根目录 ──
-# 优先使用环境变量，否则使用项目同级的 fatigueset 目录
+# 优先使用环境变量，否则使用项目同级的 WESAD 目录
 DATA_ROOT = Path(
     os.environ.get(
-        "FATIGUESET_ROOT",
-        str(Path(__file__).resolve().parent.parent.parent / "fatigueset" / "fatigueset")
+        "WESAD_ROOT",
+        str(Path(__file__).resolve().parent.parent.parent / "WESAD" / "WESAD")
     )
 )
 

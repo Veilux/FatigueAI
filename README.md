@@ -16,7 +16,7 @@ FatigueAI/
 ├── config/
 │   └── dataset_config.py      # 数据集配置（路径、信号定义、标签映射）
 ├── data/
-│   └── loader.py              # FatigueSet数据集加载器
+│   └── loader.py              # WESAD数据集加载器
 ├── features/
 │   └── extractor.py           # 特征提取器（统计特征、HRV、频域特征）
 ├── models/
@@ -59,14 +59,14 @@ python -m web.server            # 启动Web服务 → http://localhost:8080
 
 ## 数据集
 
-使用 **FatigueSet** 数据集（自建多模态运动疲劳数据集）：
+使用 **WESAD** 数据集（自建多模态运动疲劳数据集）：
 - 12名参与者 × 3次实验 × ~20分钟
 - 信号: 胸带Zephyr BioHarness（ECG/呼吸/HRV）+ 手腕Empatica E4（BVP/EDA/温度/加速度）+ Muse S头带（EEG）
 - 标签: 三级疲劳状态（低/中/高）
 
 数据目录结构：
 ```
-fatigueset/fatigueset/
+WESAD/WESAD/
 ├── metadata.csv           # 参与者活动强度分配
 ├── 01/ 02/ ... 12/        # 参与者目录
 │   └── 01/ 02/ 03/        # 会话目录
@@ -79,7 +79,7 @@ fatigueset/fatigueset/
 
 可通过环境变量指定数据路径：
 ```bash
-export FATIGUESET_ROOT=/path/to/fatigueset/fatigueset
+export WESAD_ROOT=/path/to/WESAD/WESAD
 ```
 
 ## 实验结果

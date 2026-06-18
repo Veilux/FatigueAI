@@ -19,7 +19,7 @@ from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 
-from data.loader import FatigueSetLoader
+from data.loader import WESADLoader
 from config.dataset_config import PARTICIPANT_IDS, SESSION_IDS, CORE_SIGNALS
 
 app = FastAPI(title="FatigueAI", version="1.0.0")
@@ -35,7 +35,7 @@ static_dir = Path(__file__).parent / "static"
 app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
 # 数据加载器
-loader = FatigueSetLoader()
+loader = WESADLoader()
 
 # ── 缓存加载的数据 ──
 _data_cache: Dict[str, Dict] = {}

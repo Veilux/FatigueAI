@@ -9,7 +9,7 @@ from collections import Counter
 import pandas as pd
 
 from config.dataset_config import SESSION_IDS
-from data.loader import FatigueSetLoader
+from data.loader import WESADLoader
 from deploy.monitor import FatigueMonitor
 from deploy.train import train_and_save, MODELS_DIR
 
@@ -41,7 +41,7 @@ def demo():
 
     # P07 Demo
     print("\n  [Demo] P07 测试...")
-    loader = FatigueSetLoader()
+    loader = WESADLoader()
     demo_pid = "07"
 
     for sid in SESSION_IDS:

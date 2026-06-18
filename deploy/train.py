@@ -24,7 +24,7 @@ from sklearn.ensemble import (
 )
 
 from config.dataset_config import PARTICIPANT_IDS, SESSION_IDS, ACTIVITY_LEVELS
-from data.loader import FatigueSetLoader
+from data.loader import WESADLoader
 from deploy.features import (
     extract_features, slice_sensor_data, extract_with_subwindows,
 )
@@ -46,7 +46,7 @@ def train_and_save():
     print("  FatigueAI v4 — 去EEG + 14min + 子窗口 Stacking")
     print("=" * 70)
 
-    loader = FatigueSetLoader()
+    loader = WESADLoader()
     sessions = []
     for pid in PARTICIPANT_IDS:
         for sid in SESSION_IDS:
